@@ -20,11 +20,7 @@ const InputField: React.FC<{ detail: InputDetail }> = ({ detail }) => {
   return (
     <div className="input-group">
       <label htmlFor={detail.id}>
-        {detail.tooltip ? (
-            <span data-tooltip={detail.tooltip}>{detail.label}</span>
-        ) : (
-            detail.label
-        )}
+        {detail.label}
         {detail.termTranslation && <span className="term-translation">{detail.termTranslation}</span>}
       </label>
       {detail.type === 'textarea' ? (
@@ -34,38 +30,6 @@ const InputField: React.FC<{ detail: InputDetail }> = ({ detail }) => {
       )}
     </div>
   );
-};
-
-const OvercollateralizationChart: React.FC = () => {
-    return (
-        <div className="collateral-chart-container">
-            <h4 className="chart-title">Over-Collateralization Visualization</h4>
-            
-            <div className="chart-bar-group">
-                <div className="chart-label">
-                    <span>Total Collateral Pool</span>
-                    <span>$18,200,000,000</span>
-                </div>
-                <div className="bar-background">
-                    <div className="bar-foreground bar-collateral" style={{ width: '100%' }}>
-                        100%
-                    </div>
-                </div>
-            </div>
-
-            <div className="chart-bar-group">
-                <div className="chart-label">
-                    <span>Authorized Release (5.49% Utilization)</span>
-                    <span>$1,000,000,000</span>
-                </div>
-                <div className="bar-background">
-                    <div className="bar-foreground bar-release" style={{ width: '5.49%' }}>
-                        5.49%
-                    </div>
-                </div>
-            </div>
-        </div>
-    );
 };
 
 
@@ -115,7 +79,6 @@ const VerificationModule: React.FC<VerificationModuleProps> = ({ module }) => {
                 <strong>Coverage Ratio:</strong> 18.2:1 (exceptional over-collateralization)<br />
                 <strong>Utilization:</strong> Only 5.49% of available collateral
             </p>
-            <OvercollateralizationChart />
         </div>
       )}
 
