@@ -429,6 +429,14 @@
             transform: translateY(-2px);
             box-shadow: 0 8px 25px rgba(212, 175, 55, 0.6);
         }
+
+        .pdf-download-btn:disabled {
+            background: #555;
+            color: #999;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
         
         .flame-seal {
             text-align: center;
@@ -466,6 +474,37 @@
                 grid-template-columns: 1fr;
             }
         }
+
+        /* PDF Generation Styles */
+        body.printing-executive .verification-module,
+        body.printing-executive .flame-seal {
+            display: none !important;
+        }
+
+        body.printing-technical .executive-banking-summary,
+        body.printing-technical .status-banner {
+            display: none !important;
+        }
+
+        body[class^="printing-"] .pdf-download-section,
+        body[class^="printing-"] .button-group,
+        body[class^="printing-"] .btn-support {
+            display: none !important;
+        }
+
+        /* General print adjustments for better PDF output */
+        body[class^="printing-"] .container {
+            padding-top: 20px;
+            padding-bottom: 20px;
+        }
+        
+        body[class^="printing-"] .verification-module,
+        body[class^="printing-"] .executive-banking-summary,
+        body[class^="printing-"] .status-banner,
+        body[class^="printing-"] .pdf-download-section {
+            margin-bottom: 20px;
+            box-shadow: none !important;
+        }
     </style>
   <script type="importmap">
 {
@@ -479,6 +518,8 @@
 </head>
   <body>
     <div id="root"></div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script type="module" src="/index.tsx"></script>
   </body>
 </html>
