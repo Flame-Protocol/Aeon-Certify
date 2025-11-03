@@ -20,7 +20,11 @@ const InputField: React.FC<{ detail: InputDetail }> = ({ detail }) => {
   return (
     <div className="input-group">
       <label htmlFor={detail.id}>
-        {detail.label}
+        {detail.tooltip ? (
+            <span data-tooltip={detail.tooltip}>{detail.label}</span>
+        ) : (
+            detail.label
+        )}
         {detail.termTranslation && <span className="term-translation">{detail.termTranslation}</span>}
       </label>
       {detail.type === 'textarea' ? (

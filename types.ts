@@ -10,6 +10,7 @@ export interface InputDetail {
   isBold?: boolean;
   color?: string;
   termTranslation?: string;
+  tooltip?: string;
 }
 
 export interface VerificationModuleData {
