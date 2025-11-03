@@ -1,14 +1,75 @@
-import React from 'react';
+import React, { useState } from 'react';
+
+declare global {
+  interface Window {
+    jspdf: any;
+    html2canvas: any;
+  }
+}
 
 const PdfDownloadSection: React.FC = () => {
+    const [isExecutiveLoading, setExecutiveLoading] = useState(false);
+    const [isTechnicalLoading, setTechnicalLoading] = useState(false);
 
-    const generateExecutiveSummary = () => {
-        alert('Generating Executive Summary PDF...\n\nThis will create a banker-friendly certificate with:\n• Plain language authorization details\n• Collateral coverage analysis\n• Settlement instructions\n• Banking terminology throughout');
+    const handleGeneratePdf = async (type: 'executive' | 'technical') => {
+        if (type === 'executive') {
+            setExecutiveLoading(true);
+        } else {
+            setTechnicalLoading(true);
+        }
+
+        const { jsPDF } = window.jspdf;
+        const html2canvas = window.html2canvas;
+
+        document.body.classList.add(`printing-${type}`);
+
+        const elementToCapture = document.getElementById('root');
+
+        if (elementToCapture) {
+            try {
+                const canvas = await html2canvas(elementToCapture, {
+                    scale: 2,
+                    useCORS: true,
+                    backgroundColor: '#1a1a2e',
+                });
+
+                const imgData = canvas.toDataURL('image/png');
+                const pdf = new jsPDF('p', 'mm', 'a4');
+                const pdfWidth = pdf.internal.pageSize.getWidth();
+                const imgProps = pdf.getImageProperties(imgData);
+                const ratio = imgProps.height / imgProps.width;
+                const imgHeight = pdfWidth * ratio;
+
+                const pageHeight = pdf.internal.pageSize.getHeight();
+                let heightLeft = imgHeight;
+                let position = 0;
+
+                pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, imgHeight);
+                heightLeft -= pageHeight;
+
+                while (heightLeft > 0) {
+                    position -= pageHeight;
+                    pdf.addPage();
+                    pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, imgHeight);
+                    heightLeft -= pageHeight;
+                }
+
+                pdf.save(`FLAME-Verification-${type === 'executive' ? 'Executive-Summary' : 'Technical-Audit'}.pdf`);
+            } catch (error) {
+                console.error("Error generating PDF:", error);
+                alert("Sorry, there was an error generating the PDF. Please try again.");
+            }
+        }
+
+        document.body.classList.remove(`printing-${type}`);
+
+        if (type === 'executive') {
+            setExecutiveLoading(false);
+        } else {
+            setTechnicalLoading(false);
+        }
     };
-    
-    const generateTechnicalAudit = () => {
-        alert('Generating Technical Audit PDF...\n\nThis will create a complete cryptographic verification report with:\n• All hash values and signatures\n• Blockchain proofs\n• Merkle tree data\n• Technical specifications');
-    };
+
 
     return (
         <div className="pdf-download-section">
@@ -24,8 +85,8 @@ const PdfDownloadSection: React.FC = () => {
                         Plain-language certificate for banking and compliance review. 
                         Presents authorization in familiar audit report format.
                     </p>
-                     <button className="pdf-download-btn" onClick={generateExecutiveSummary}>
-                        📥 Download Executive Summary
+                     <button className="pdf-download-btn" onClick={() => handleGeneratePdf('executive')} disabled={isExecutiveLoading || isTechnicalLoading}>
+                        {isExecutiveLoading ? 'Generating...' : '📥 Download Executive Summary'}
                     </button>
                     <p style={{ fontSize: '0.85em', marginTop: '15px', color: '#888' }}>
                         Banker-friendly: Authorization, collateral, coverage, settlement
@@ -38,8 +99,8 @@ const PdfDownloadSection: React.FC = () => {
                         Full cryptographic verification with signatures, hashes, blockchain proofs, 
                         and Merkle tree validation data.
                     </p>
-                    <button className="pdf-download-btn" onClick={generateTechnicalAudit}>
-                        📥 Download Technical Audit
+                    <button className="pdf-download-btn" onClick={() => handleGeneratePdf('technical')} disabled={isExecutiveLoading || isTechnicalLoading}>
+                        {isTechnicalLoading ? 'Generating...' : '📥 Download Technical Audit'}
                     </button>
                     <p style={{ fontSize: '0.85em', marginTop: '15px', color: '#888' }}>
                         Technical: All cryptographic proofs and verification data
