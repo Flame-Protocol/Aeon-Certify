@@ -26,6 +26,7 @@
             padding: 30px 20px;
             text-align: center;
             box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            position: relative;
         }
         
         .archive-title {
@@ -207,11 +208,11 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 25px;
             padding-bottom: 20px;
             border-bottom: 2px solid #0f3460;
             flex-wrap: wrap;
             gap: 15px;
+            cursor: pointer;
         }
         
         .module-title {
@@ -242,6 +243,23 @@
             font-weight: 600;
         }
         
+        .module-controls {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .module-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out;
+        }
+
+        .module-content.open {
+            max-height: 2000px; /* Adjust if content is larger */
+            margin-top: 25px;
+        }
+
         .btn-support {
             background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
             color: #d4af37;
@@ -341,7 +359,6 @@
             background: rgba(15, 52, 96, 0.3);
             border-left: 4px solid #d4af37;
             padding: 20px;
-            margin-top: 20px;
             margin-bottom: 25px;
             border-radius: 8px;
             color: #c9c9c9;
@@ -429,14 +446,6 @@
             transform: translateY(-2px);
             box-shadow: 0 8px 25px rgba(212, 175, 55, 0.6);
         }
-
-        .pdf-download-btn:disabled {
-            background: #555;
-            color: #999;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
         
         .flame-seal {
             text-align: center;
@@ -450,125 +459,28 @@
             font-size: 0.9em;
             font-style: italic;
         }
-        
-        /* Collateral Chart Styles */
-        .collateral-chart-container {
-            margin-top: 25px;
-            padding-top: 20px;
-            border-top: 1px solid rgba(127, 255, 127, 0.3);
-        }
 
-        .collateral-chart-container .chart-title {
-            color: #7fff7f;
-            font-weight: bold;
-            margin-bottom: 15px;
-            font-size: 1.1em;
-            text-align: center;
-        }
-
-        .chart-bar-group {
-            margin-bottom: 20px;
-        }
-
-        .chart-label {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.9em;
-            color: #c9c9c9;
-            margin-bottom: 8px;
-            padding: 0 5px;
-        }
-
-        .chart-label span:first-child {
+        .btn-print {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: #d4af37;
+            border: 1px solid #d4af37;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 0.95em;
             font-weight: 600;
-        }
-
-        .bar-background {
-            background: rgba(15, 52, 96, 0.5);
-            border-radius: 5px;
-            height: 35px;
-            overflow: hidden;
-            border: 1px solid #0f3460;
-            padding: 3px;
-        }
-
-        .bar-foreground {
-            height: 100%;
-            border-radius: 3px;
-            transition: width 1s ease-in-out;
+            cursor: pointer;
+            transition: all 0.3s;
             display: flex;
             align-items: center;
-            justify-content: flex-end;
-            padding-right: 12px;
-            font-weight: bold;
-            color: #0a0e27;
-            font-size: 0.9em;
-            white-space: nowrap;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+            gap: 8px;
         }
-
-        .bar-collateral {
-            background: linear-gradient(90deg, #d4af37, #b8941f);
-            width: 100%;
-            justify-content: center;
-        }
-
-        .bar-release {
-            background: linear-gradient(90deg, #7fff7f, #5fbf5f);
-            width: 5.49%; /* 1B is 5.49% of 18.2B */
-            min-width: 65px; /* Ensure text is visible */
-        }
-
-        /* Tooltip Styles */
-        [data-tooltip] {
-            position: relative;
-            cursor: help;
-            border-bottom: 1px dotted #d4af37;
-        }
-
-        [data-tooltip]::after {
-            content: attr(data-tooltip);
-            position: absolute;
-            width: 280px;
-            left: 50%;
-            transform: translateX(-50%);
-            bottom: 125%;
-            text-align: left;
-            background-color: #0f1620;
-            color: #eee;
-            padding: 10px;
-            border-radius: 6px;
-            font-size: 0.9em;
-            line-height: 1.5;
-            font-family: 'Georgia', 'Times New Roman', serif;
-            font-style: normal;
-            visibility: hidden;
-            opacity: 0;
-            transition: opacity 0.3s, visibility 0.3s;
-            z-index: 10;
-            border: 1px solid #d4af37;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-            white-space: normal;
-        }
-        
-        [data-tooltip]::before {
-            content: '';
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            bottom: 100%;
-            border: 8px solid transparent;
-            border-top-color: #d4af37;
-            visibility: hidden;
-            opacity: 0;
-            transition: opacity 0.3s, visibility 0.3s;
-            z-index: 10;
-        }
-
-        [data-tooltip]:hover::after,
-        [data-tooltip]:hover::before {
-            visibility: visible;
-            opacity: 1;
+        .btn-print:hover {
+            background: linear-gradient(135deg, #2a5298 0%, #1e3c72 100%);
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+            transform: translateY(-2px);
         }
 
         @media (max-width: 900px) {
@@ -595,35 +507,149 @@
             }
         }
 
-        /* PDF Generation Styles */
-        body.printing-executive .verification-module,
-        body.printing-executive .flame-seal {
-            display: none !important;
+        /* Print Preview Modal Styles */
+        .print-preview-overlay {
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background-color: rgba(0, 0, 0, 0.75);
+          z-index: 1000;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          padding: 20px;
         }
 
-        body.printing-technical .executive-banking-summary,
-        body.printing-technical .status-banner {
-            display: none !important;
+        .print-preview-modal {
+          background-color: #1a1a2e;
+          border: 2px solid #d4af37;
+          border-radius: 15px;
+          width: 100%;
+          max-width: 1200px;
+          height: 95%;
+          max-height: 90vh;
+          display: flex;
+          flex-direction: column;
+          box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+          overflow: hidden;
         }
 
-        body[class^="printing-"] .pdf-download-section,
-        body[class^="printing-"] .button-group,
-        body[class^="printing-"] .btn-support {
-            display: none !important;
+        .print-preview-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 20px 30px;
+          background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+          border-bottom: 2px solid #d4af37;
+          flex-shrink: 0;
         }
 
-        /* General print adjustments for better PDF output */
-        body[class^="printing-"] .container {
-            padding-top: 20px;
-            padding-bottom: 20px;
+        .print-preview-header h2 {
+          color: #d4af37;
+          font-size: 1.5em;
         }
-        
-        body[class^="printing-"] .verification-module,
-        body[class^="printing-"] .executive-banking-summary,
-        body[class^="printing-"] .status-banner,
-        body[class^="printing-"] .pdf-download-section {
-            margin-bottom: 20px;
+
+        .print-preview-controls {
+          display: flex;
+          gap: 15px;
+        }
+
+        .print-preview-controls button {
+          padding: 10px 25px;
+          font-size: 1em;
+          font-weight: 600;
+          border-radius: 6px;
+          cursor: pointer;
+          transition: all 0.3s;
+        }
+
+        .btn-print-action {
+          background: linear-gradient(135deg, #d4af37 0%, #b8941f 100%);
+          color: #0a0e27;
+          border: none;
+        }
+        .btn-print-action:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
+        }
+
+        .btn-cancel-action {
+          background: #16213e;
+          color: #c9c9c9;
+          border: 1px solid #0f3460;
+        }
+        .btn-cancel-action:hover {
+          background: #1e3c72;
+          color: #eee;
+        }
+
+        .print-preview-content {
+          flex-grow: 1;
+          overflow-y: auto;
+          padding: 20px;
+          background: #0a0e27;
+        }
+
+        .print-preview-sheet {
+          background: #1a1a2e;
+          max-width: 1100px;
+          margin: 0 auto;
+          padding: 20px;
+          border: 1px solid #0f3460;
+        }
+
+        @media print {
+          body * {
+            visibility: hidden;
+          }
+
+          #printable-area, #printable-area * {
+            visibility: visible;
+          }
+
+          #printable-area {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+          }
+
+          /* Hide non-essential elements for printing */
+          .btn-print, .pdf-download-section, .verification-module .module-controls, .verification-module .button-group, .module-header[style*="cursor: pointer"] {
+            display: none !important;
+          }
+          
+          /* Ensure module content is visible when printing */
+          .verification-module .module-content {
+            max-height: none !important;
+            overflow: visible !important;
+            display: block !important;
+            margin-top: 25px !important;
+          }
+          
+          /* Reset some styles for better printing */
+          body {
+            background: #fff;
+            color: #000;
+          }
+
+          .header-banner, .executive-banking-summary, .status-banner, .verification-module, .flame-seal, .banking-card, .banking-explanation, .explanation-box, .input-group input, .input-group textarea, .reference-bar {
+            background: #fff !important;
+            color: #000 !important;
+            border-color: #ccc !important;
             box-shadow: none !important;
+          }
+          
+          .archive-title, .archive-subtitle, .banking-subtitle, .reference-bar *, h2, .banking-card .value, .banking-explanation h4, .module-number, .module-title h2, .explanation-box h4, .flame-seal p strong, .status-check, .term-translation, .input-group *, .banking-card .label {
+            color: #000 !important;
+            text-shadow: none !important;
+          }
+
+          .verification-module::before {
+              background: #ccc !important;
+          }
         }
     </style>
   <script type="importmap">
@@ -638,8 +664,6 @@
 </head>
   <body>
     <div id="root"></div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script type="module" src="/index.tsx"></script>
   </body>
 </html>
