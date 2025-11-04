@@ -191,6 +191,12 @@
             margin-bottom: 35px;
             box-shadow: 0 8px 25px rgba(0,0,0,0.6);
             position: relative;
+            transition: border-color 0.5s ease-in-out, box-shadow 0.5s ease-in-out;
+        }
+        
+        .verification-module.open {
+            border-color: #d4af37;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.6), 0 0 25px rgba(212, 175, 55, 0.4);
         }
         
         .verification-module::before {
@@ -1222,14 +1228,17 @@ Verification: All Cryptographic Elements Valid</textarea>
 
             const toggleModule = (header) => {
                 const content = header.nextElementSibling;
+                const module = header.closest('.verification-module');
                 const icon = header.querySelector('.chevron-icon');
                 const isOpen = content.classList.contains('open');
 
                 // Close all other modules
                 moduleHeaders.forEach(h => {
                     if (h !== header) {
+                        const otherModule = h.closest('.verification-module');
                         h.nextElementSibling.classList.remove('open');
                         h.classList.remove('open');
+                        otherModule.classList.remove('open');
                         const otherIcon = h.querySelector('.chevron-icon');
                         if(otherIcon) otherIcon.style.transform = 'rotate(0deg)';
                     }
@@ -1239,10 +1248,12 @@ Verification: All Cryptographic Elements Valid</textarea>
                 if (isOpen) {
                     content.classList.remove('open');
                     header.classList.remove('open');
+                    module.classList.remove('open');
                     if(icon) icon.style.transform = 'rotate(0deg)';
                 } else {
                     content.classList.add('open');
                     header.classList.add('open');
+                    module.classList.add('open');
                     if(icon) icon.style.transform = 'rotate(180deg)';
                 }
             };
